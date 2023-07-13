@@ -40,7 +40,7 @@ tags:
       description: Find out more about Arttaca
       url: 'https://arttaca.io/about'
 paths:
-  /orders:
+  /order:
     post:
       tags:
         - order
@@ -48,17 +48,17 @@ paths:
       description: Add a new order to the Orders table
       operationId: addOrder
       requestBody:
-        description: Create a new order in Orders
+        description: Creates a new order in Order table
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Orders'
+              $ref: '#/components/schemas/Order'
           application/xml:
             schema:
-              $ref: '#/components/schemas/Orders'
+              $ref: '#/components/schemas/Order'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Orders'
+              $ref: '#/components/schemas/Order'
           multipart/form-data:
             schema:
               type: object
@@ -74,17 +74,17 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Orders'
+                $ref: '#/components/schemas/Order'
             application/xml:
               schema:
-                $ref: '#/components/schemas/Orders'
+                $ref: '#/components/schemas/Order'
         '405':
           description: Invalid input
       security:
         - arttaca_auth:
             - 'write:order'
             - 'read:order'
-  /trades:
+  /trade:
     post:
       tags:
         - trade
@@ -96,13 +96,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Trades'
+              $ref: '#/components/schemas/Trade'
           application/xml:
             schema:
-              $ref: '#/components/schemas/Trades'
+              $ref: '#/components/schemas/Trade'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Trades'
+              $ref: '#/components/schemas/Trade'
           multipart/form-data:
             schema:
               type: object
@@ -118,54 +118,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Trades'
+                $ref: '#/components/schemas/Trade'
             application/xml:
               schema:
-                $ref: '#/components/schemas/Trades'
-        '405':
-          description: Invalid input
-      security:
-        - arttaca_auth:
-            - 'write:trades'
-            - 'read:trades'
-  /historical:
-    post:
-      tags:
-        - historical
-      summary: Orders which have either COMPLETED | CANCELLED | EXPIRED are placed into the historical table
-      description: Add a new order to historical table
-      operationId: addHistorical
-      requestBody:
-        description: Create a new order in Historical
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Historical'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/Historical'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Historical'
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                '':
-                  type: string
-                  x-stoplight:
-                    id: 2
-        required: true
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Trades'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Trades'
+                $ref: '#/components/schemas/Trade'
         '405':
           description: Invalid input
       security:
@@ -174,209 +130,62 @@ paths:
             - 'read:trades'
 components:
   schemas:
-    Orders:
+    Order:
       type: object
       xml:
         name: order
       x-stoplight:
         id: 3
       properties:
-        id:
-          type: integer
-          format: int32
-          example: 1
-        userAddress:
+        userId:
           type: string
-          description: The address of the user who initiated the order to BUY or SELL
-          example: 0xfj93hf39fh934hf93478hf
-        quantity:
-          type: integer
-          format: int32
-          description: The amount of tokens the user wants to BUY or SELL
-          example: 7
-        orderType:
+          example: eqf43q34q334f34434f
+        eventId:
           type: string
-          description: 'The order type, BUY or SELL'
+          example: eqf43q34q334f34434f
+        status:
+          type: string
+          description: 'The status of the order, COMPLETED | CANCELLED | ACTIVE | EXPIRED'
           enum:
-            - BUY
-            - SELL
-          example: BUY
-        itemType:
-          type: string
-          description: 'The item type, NFT | NFT_PLUS | SFT'
-          enum:
-            - NFT
-            - NFT_PLUS
-            - SFT
-          example: SFT
-        assetId:
-          type: integer
-          format: int64
-          description: The ID of the ERC1155 token
-          example: 1
-        price:
-          type: integer
-          format: float
-          description: The price of the token (1 token)
-          example: 2
-        listingSignature:
-          type: string
-          description: The signature related to the order
-          example: ifeurfh9eurf3489348r9fh3fh9384hf99384hf9348hf9384hf9h
-        expirationDate:
-          type: integer
-          format: int32
-          description: 'If the order is not fulfilled by this date, the order will be removed from ''orders'' and placed into ''history'' with status of ''EXPIRED'''
-          example: 2
-        createdAt:
-          type: string
-          format: date
-          description: The time the order was created
-          example: '2019-02-03'
-        updatedAt:
-          type: string
-          format: date
-          description: The time the order was updated
-          example: '2019-02-03'
+            - COMPLETED
+            - CANCELLED
+            - ACTIVE
+            - EXPIRED
+          example: COMPLETED
       required:
-        - userAddress
-        - quantity
-        - type
-        - assetId
-        - price
-        - listingSignature
-        - expirationDate
-        - orderType
-        - itemType
-    Trades:
+        - userId
+        - eventId
+        - status
+    Trade:
       type: object
       xml:
         name: trade
       x-stoplight:
         id: 4
         properties:
-          id:
-            type: integer
-            format: int32
-            example: 1
-          orderTableId:
-            type: integer
-            format: int32
-            example: 12
-          userAddress:
+          orderId:
             type: string
-            description: The address of the user who initialised the order
-            example: 0xbdfhjweuf384gf8g34fgd8h3e
+            example: eqf43q34q334f34434f
+          listingId:
+            type: string
+            example: eqf43q34q334f34434f
           quantity:
             type: integer
             format: int32
-          createdAt:
-            type: string
-            format: date
-            description: The time the order was created
-            example: '2019-02-03'
-          updatedAt:
-            type: string
-            format: date
-            description: The time the order was updated
-            example: '2019-02-03'
         required:
-          - orderTableId
-          - userAddress
+          - orderId
+          - listingId
           - quantity
-          - createdAt
-    Historical:
-      type: object
-      xml:
-        name: historical
-      x-stoplight:
-        id: 5
-        properties:
-          id:
-          type: integer
-          format: int32
-          example: 1
-        userAddress:
-          type: string
-          description: The address of the user who initiated the order to BUY or SELL
-          example: 0xfj93hf39fh934hf93478hf
-        quantity:
-          type: integer
-          format: int32
-          description: The amount of tokens the user wants to BUY or SELL
-          example: 7
-        orderType:
-          type: string
-          description: 'The order type, BUY or SELL'
-          enum:
-            - BUY
-            - SELL
-          example: BUY
-        itemType:
-          type: string
-          description: 'The item type, NFT | NFT_PLUS | SFT'
-          enum:
-            - NFT
-            - NFT_PLUS
-            - SFT
-          example: SFT
-        assetId:
-          type: integer
-          format: int64
-          description: The ID of the ERC1155 token
-          example: 1
-        price:
-          type: integer
-          format: float
-          description: The price of the token (1 token)
-          example: 2
-        listingSignature:
-          type: string
-          description: The signature related to the order
-          example: ifeurfh9eurf3489348r9fh3fh9384hf99384hf9348hf9384hf9h
-        expirationDate:
-          type: integer
-          format: int32
-          description: 'If the order is not fulfilled by this date, the order will be removed from ''orders'' and placed into ''history'' with status of ''EXPIRED'''
-          example: 2
-        status:
-          type: string
-          description: 'The reason for being in the historical table. CANCELLED | COMPLETED | EXPIRED'
-          enum:
-            - CANCELLED
-            - COMPLETED
-            - EXPIRED
-        createdAt:
-          type: string
-          format: date
-          description: The time the order was created
-          example: '2019-02-03'
-        updatedAt:
-          type: string
-          format: date
-          description: The time the order was updated
-          example: '2019-02-03'
-      required:
-        - userAddress
-        - quantity
-        - type
-        - assetId
-        - price
-        - listingSignature
-        - expirationDate
-        - orderType
-        - itemType
-        - status
   requestBodies:
     Order:
-      description: An order object that needs to be added to the 'Orders' table
+      description: An order object that needs to be added to the 'Order' table
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/Orders"
+            $ref: "#/components/schemas/Order"
         application/xml:
           schema:
-            $ref: '#/components/schemas/Orders'
+            $ref: '#/components/schemas/Order'
         multipart/form-data:
           schema:
             type: object
@@ -385,15 +194,15 @@ components:
                 type: string
                 x-stoplight:
                   id: 6
-    Trades:
-      description: An order object that needs to be added to the 'Orders' table
+    Trade:
+      description: An trade object that needs to be added to the 'Trade' table
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Trades'
+            $ref: '#/components/schemas/Trade'
         application/xml:
           schema:
-            $ref: '#/components/schemas/Trades'
+            $ref: '#/components/schemas/Trade'
         multipart/form-data:
           schema:
             type: object
@@ -402,23 +211,6 @@ components:
                 type: string
                 x-stoplight:
                   id: 7
-    Historical:
-      description: An order object that needs to be added to the 'Historical' table
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Historical'
-        application/xml:
-          schema:
-            $ref: '#/components/schemas/Historical'
-        multipart/form-data:
-          schema:
-            type: object
-            properties:
-              '':
-                type: string
-                x-stoplight:
-                  id: 8
   securitySchemes:
     arttaca_auth:
       type: oauth2

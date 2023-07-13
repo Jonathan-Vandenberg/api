@@ -1,0 +1,55 @@
+#Listing
+id uuid
+type ListingType
+userId uuid
+assetId uuid
+quantity number
+price
+status
+expirationDate
+signature
+createdAt
+updatedAt
+
+#Trade
+id uuid
+orderId
+listingId
+quantity
+createdAt
+updatedAt
+
+#Order
+id
+userId uuid
+eventId uuid
+status OrderStatus
+createdAt
+updatedAt
+
+#ListingActivity
+id uuid
+listingId
+reference
+createdAt
+
+#Auction
+id
+listingId
+status
+createdAt
+updatedAt
+
+#Bid
+id
+auctionId
+price
+status
+createdAt
+updatedAt
+
+#AuctionActivity
+id
+auctionId
+reference
+createdAt
