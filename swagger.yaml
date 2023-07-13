@@ -37,229 +37,463 @@ tags:
 paths:
   /order:
     post:
-      tags:
-        - order
-      summary: Add a new order to the Orders table
-      description: Add a new order to the Orders table
-      operationId: addOrder
       requestBody:
-        description: Creates a new order in Order table
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Order'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/Order'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Order'
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                '':
-                  type: string
-                  x-stoplight:
-                    id: 1
-        required: true
+              $ref: '#/components/schemas/OrderCreateInput'
       responses:
         '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Order'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Order'
-        '405':
-          description: Invalid input
-      security:
-        - arttaca_auth:
-            - 'write:order'
-            - 'read:order'
+          description: OK
+    get:
+      responses:
+        '200':
+          description: OK
   /order/{id}:
     get:
-      tags:
-        - order
-      summary: get all orders from the Orders table
-      description: get all orders from the Orders table
-      operationId: addOrder
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+    put:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
       requestBody:
-        description: get all orders from the Orders table
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Order'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/Order'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Order'
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                '':
-                  type: string
-                  x-stoplight:
-                    id: 1
-        required: true
+              $ref: '#/components/schemas/OrderUpdateInput'
       responses:
         '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Order'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Order'
-        '405':
-          description: Invalid input
-      security:
-        - arttaca_auth:
-            - 'write:order'
-            - 'read:order'
+          description: OK
+    delete:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
   /trade:
     post:
-      tags:
-        - trade
-      summary: Add a new trade to the Trades table
-      description: Add a new trade to the Trades table
-      operationId: addTrade
       requestBody:
-        description: Create a new trade in Trades
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Trade'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/Trade'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Trade'
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                '':
-                  type: string
-                  x-stoplight:
-                    id: z37n2blj91ix7
-        required: true
+              $ref: '#/components/schemas/TradeCreateInput'
       responses:
         '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Trade'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Trade'
-        '405':
-          description: Invalid input
-      security:
-        - arttaca_auth:
-            - 'write:trades'
-            - 'read:trades'
+          description: OK
+    get:
+      responses:
+        '200':
+          description: OK
+  /trade/{id}:
+    get:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+    put:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TradeUpdateInput'
+      responses:
+        '200':
+          description: OK
+    delete:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+  /listing:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListingCreateInput'
+      responses:
+        '200':
+          description: OK
+    get:
+      responses:
+        '200':
+          description: OK
+  /listing/{id}:
+    get:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+    put:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListingUpdateInput'
+      responses:
+        '200':
+          description: OK
+    delete:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+  /listingactivity:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListingActivityCreateInput'
+      responses:
+        '200':
+          description: OK
+    get:
+      responses:
+        '200':
+          description: OK
+  /listingactivity/{id}:
+    get:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+    put:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListingActivityUpdateInput'
+      responses:
+        '200':
+          description: OK
+    delete:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+  /auction:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuctionCreateInput'
+      responses:
+        '200':
+          description: OK
+    get:
+      responses:
+        '200':
+          description: OK
+  /auction/{id}:
+    get:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+    put:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuctionUpdateInput'
+      responses:
+        '200':
+          description: OK
+    delete:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+  /bid:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BidCreateInput'
+      responses:
+        '200':
+          description: OK
+    get:
+      responses:
+        '200':
+          description: OK
+  /bid/{id}:
+    get:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+    put:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BidUpdateInput'
+      responses:
+        '200':
+          description: OK
+    delete:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
 components:
   schemas:
-    Order:
+    OrderCreateInput:
       type: object
-      xml:
-        name: order
-      x-stoplight:
-        id: 3
       properties:
         userId:
           type: string
-          example: eqf43q34q334f34434f
         eventId:
           type: string
-          example: eqf43q34q334f34434f
         status:
-          type: string
-          description: 'The status of the order, COMPLETED | CANCELLED | ACTIVE | EXPIRED'
-          enum:
-            - COMPLETED
-            - CANCELLED
-            - ACTIVE
-            - EXPIRED
-          example: COMPLETED
-      required:
-        - userId
-        - eventId
-        - status
-    Trade:
+          $ref: '#/components/schemas/OrderStatus'
+    OrderUpdateInput:
       type: object
-      xml:
-        name: trade
-      x-stoplight:
-        id: 4
-        properties:
-          orderId:
-            type: string
-            example: eqf43q34q334f34434f
-          listingId:
-            type: string
-            example: eqf43q34q334f34434f
-          quantity:
-            type: integer
-            format: int32
-        required:
-          - orderId
-          - listingId
-          - quantity
-  requestBodies:
-    Order:
-      description: An order object that needs to be added to the 'Order' table
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/Order"
-        application/xml:
-          schema:
-            $ref: '#/components/schemas/Order'
-        multipart/form-data:
-          schema:
-            type: object
-            properties:
-              '':
-                type: string
-                x-stoplight:
-                  id: 6
-    Trade:
-      description: An trade object that needs to be added to the 'Trade' table
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Trade'
-        application/xml:
-          schema:
-            $ref: '#/components/schemas/Trade'
-        multipart/form-data:
-          schema:
-            type: object
-            properties:
-              '':
-                type: string
-                x-stoplight:
-                  id: 7
-  securitySchemes:
-    arttaca_auth:
-      type: oauth2
-      flows:
-        implicit:
-          authorizationUrl: 'https://arttaca-authorization-url.io/'
-          scopes:
-            'write:order': modify orders in your account
-            'read:order': view your orders
-    api_key:
-      type: apiKey
-      name: api_key
-      in: header
+      properties:
+        userId:
+          type: string
+        eventId:
+          type: string
+        status:
+          $ref: '#/components/schemas/OrderStatus'
+    TradeCreateInput:
+      type: object
+      properties:
+        orderId:
+          type: string
+        listingId:
+          type: string
+        quantity:
+          type: integer
+    TradeUpdateInput:
+      type: object
+      properties:
+        orderId:
+          type: string
+        listingId:
+          type: string
+        quantity:
+          type: integer
+    ListingCreateInput:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/ListingType'
+        userId:
+          type: string
+        assetId:
+          type: string
+        quantity:
+          type: integer
+        price:
+          type: integer
+        status:
+          $ref: '#/components/schemas/ListingStatus'
+        expirationDate:
+          type: string
+          format: date-time
+        signature:
+          type: string
+    ListingUpdateInput:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/ListingType'
+        userId:
+          type: string
+        assetId:
+          type: string
+        quantity:
+          type: integer
+        price:
+          type: integer
+        status:
+          $ref: '#/components/schemas/ListingStatus'
+        expirationDate:
+          type: string
+          format: date-time
+        signature:
+          type: string
+    ListingActivityCreateInput:
+      type: object
+      properties:
+        listingId:
+          type: string
+        reference:
+          type: object
+    ListingActivityUpdateInput:
+      type: object
+      properties:
+        listingId:
+          type: string
+        reference:
+          type: object
+    AuctionCreateInput:
+      type: object
+      properties:
+        listingId:
+          type: string
+        status:
+          $ref: '#/components/schemas/AuctionStatus'
+    AuctionUpdateInput:
+      type: object
+      properties:
+        listingId:
+          type: string
+        status:
+          $ref: '#/components/schemas/AuctionStatus'
+    BidCreateInput:
+      type: object
+      properties:
+        auctionId:
+          type: string
+        price:
+          type: integer
+        status:
+          $ref: '#/components/schemas/BidStatus'
+    BidUpdateInput:
+      type: object
+      properties:
+        auctionId:
+          type: string
+        price:
+          type: integer
+        status:
+          $ref: '#/components/schemas/BidStatus'
+    OrderStatus:
+      type: string
+      enum:
+        - EXECUTED
+        - PENDING
+    ListingType:
+      type: string
+      enum:
+        - x
+        - OFFER
+        - SELL
+        - AUCTION
+    ListingStatus:
+      type: string
+      enum:
+        - ACTIVE
+        - COMPLETED
+        - CANCELED
+        - EXPIRED
+    AuctionStatus:
+      type: string
+      enum:
+        - ENDED
+        - ONGOING
+        - PAUSED
+        - SCHEDULED
+        - CANCELED
+    AuctionType:
+      type: string
+      enum:
+        - DUTCH
+    BidStatus:
+      type: string
+      enum:
+        - ACCEPTED
+        - PENDING
+        - REJECTED
+        - CANCELED
