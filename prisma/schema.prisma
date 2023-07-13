@@ -63,7 +63,7 @@ model Listing {
 }
 
 model Auction {
-  id            String            @id @map("_id")
+  id            String            @id @default(cuid()) @map("_id")
   listingId     String            @unique
   status        AuctionStatus
   createdAt     DateTime          @default(now())
@@ -74,7 +74,7 @@ model Auction {
 }
 
 model AuctionActivity {
-  id        String   @id @map("_id")
+  id        String   @id @default(cuid()) @map("_id")
   auctionId String
   reference Json?
   createdAt DateTime @default(now())
@@ -82,7 +82,7 @@ model AuctionActivity {
 }
 
 model ListingActivity {
-  id        String   @id @map("_id")
+  id        String   @id @default(cuid()) @map("_id")
   listingId String
   reference Json?
   createdAt DateTime @default(now())
@@ -90,7 +90,7 @@ model ListingActivity {
 }
 
 model Order {
-  id        String      @id @map("_id")
+  id        String      @id @default(cuid()) @map("_id")
   userId    String
   eventId   String      @unique
   status    OrderStatus
@@ -100,7 +100,7 @@ model Order {
 }
 
 model Trade {
-  id        String   @id @map("_id")
+  id        String   @id @default(cuid()) @map("_id")
   orderId   String
   listingId String
   quantity  Int
@@ -111,7 +111,7 @@ model Trade {
 }
 
 model Bid {
-  id        String    @id @map("_id")
+  id        String    @id @default(cuid()) @map("_id")
   auctionId String
   price     Int
   status    BidStatus

@@ -1,6 +1,6 @@
 import express from 'express';
 import { createListingController, getAllListingsController } from './modules/listing/controllers/ListingController';
-import { createTradeController, getAllTradesController, getTradeController, updateTradeController, deleteTradeController } from './modules/trade/controllers/TradeController';
+import { createTradeController, getAllTradesController, getTradeByIdController, updateTradeController, deleteTradeController } from './modules/trade/controllers/TradeController';
 import { createAuctionController, getAllAuctionsController, getAuctionController, updateAuctionController, deleteAuctionController } from './modules/auction/controllers/AuctionController';
 import { createBidController, getAllBidsController, getBidController, updateBidController, deleteBidController } from './modules/bid/controllers/BidController';
 
@@ -20,27 +20,26 @@ app.use(cors({
 app.post('/create-listing', createListingController);
 
 // Trade routes
-// app.get('/trades', getAllTradesController);
-// app.get('/trades/:id', getTradeController);
-// app.post('/trades', createTradeController);
-// app.put('/trades/:id', updateTradeController);
-// app.delete('/trades/:id', deleteTradeController);
+app.get('/trade', getAllTradesController);
+app.get('/trade/:id', getTradeByIdController);
+app.post('/trade', createTradeController);
+app.put('/trade/:id', updateTradeController);
+app.delete('/trade/:id', deleteTradeController);
 
-// Auction routes
+// // Auction routes
 // app.get('/auctions', getAllAuctionsController);
 // app.get('/auctions/:id', getAuctionController);
 // app.post('/auctions', createAuctionController);
 // app.put('/auctions/:id', updateAuctionController);
 // app.delete('/auctions/:id', deleteAuctionController);
-
-// Bid routes
+//
+// // Bid routes
 // app.get('/bids', getAllBidsController);
 // app.get('/bids/:id', getBidController);
 // app.post('/bids', createBidController);
 // app.put('/bids/:id', updateBidController);
 // app.delete('/bids/:id', deleteBidController);
 
-// Start the server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

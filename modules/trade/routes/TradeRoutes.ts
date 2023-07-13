@@ -1,7 +1,7 @@
 import express from 'express';
 import {
     getAllTradesController,
-    getTradeController,
+    getTradeByIdController,
     createTradeController,
     updateTradeController,
     deleteTradeController
@@ -13,7 +13,7 @@ const router = express.Router();
 router.get('/', getAllTradesController);
 
 // Get a specific trade
-router.get('/:id', getTradeController);
+router.get('/:id', getTradeByIdController);
 
 // Create a new trade
 router.post('/', createTradeController);
