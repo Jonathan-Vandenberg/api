@@ -22,13 +22,8 @@ externalDocs:
   description: Find out more about Arttaca
   url: 'https://arttaca.io/about'
 servers:
-  - url: 'http://localhost:9999'
+  - url: 'http://localhost:8080'
 tags:
-  - name: historical
-    description: Everything about the history of orders
-    externalDocs:
-      description: Find out more about Arttaca
-      url: 'https://arttaca.io/about'
   - name: order
     description: Everything about orders
     externalDocs:
