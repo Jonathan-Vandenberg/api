@@ -1,4 +1,20 @@
-#Listing
+#Order #TODO post get/* get/{id} put/{id} delete/{id}
+id
+userId uuid
+eventId uuid
+status OrderStatus
+createdAt
+updatedAt
+
+#Trade #TODO post get/* get/{id} put/{id} delete/{id}
+id uuid
+orderId
+listingId
+quantity
+createdAt
+updatedAt
+
+#Listing #TODO post get/* get/{id} put/{id} delete/{id}
 id uuid
 type ListingType
 userId uuid
@@ -11,36 +27,20 @@ signature
 createdAt
 updatedAt
 
-#Trade
-id uuid
-orderId
-listingId
-quantity
-createdAt
-updatedAt
-
-#Order
-id
-userId uuid
-eventId uuid
-status OrderStatus
-createdAt
-updatedAt
-
-#ListingActivity
+#ListingActivity #TODO post get/* get/{id} put/{id} delete/{id}
 id uuid
 listingId
 reference
 createdAt
 
-#Auction
+#Auction #TODO post get/* get/{id} get/{id} put/{id} delete/{id}
 id
 listingId
 status
 createdAt
 updatedAt
 
-#Bid
+#Bid #TODO post get/* get/{id} get/{id} put/{id} delete/{id}
 id
 auctionId
 price
@@ -48,7 +48,7 @@ status
 createdAt
 updatedAt
 
-#AuctionActivity
+#AuctionActivity #TODO post get/* get/{id} put/{id} delete/{id}
 id
 auctionId
 reference

@@ -79,6 +79,50 @@ paths:
         - arttaca_auth:
             - 'write:order'
             - 'read:order'
+  /order/{id}:
+    get:
+      tags:
+        - order
+      summary: get all orders from the Orders table
+      description: get all orders from the Orders table
+      operationId: addOrder
+      requestBody:
+        description: get all orders from the Orders table
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Order'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Order'
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                '':
+                  type: string
+                  x-stoplight:
+                    id: 1
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '405':
+          description: Invalid input
+      security:
+        - arttaca_auth:
+            - 'write:order'
+            - 'read:order'
   /trade:
     post:
       tags:
