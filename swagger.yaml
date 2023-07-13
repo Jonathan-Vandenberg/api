@@ -40,19 +40,13 @@ tags:
       description: Find out more about Arttaca
       url: 'https://arttaca.io/about'
 paths:
-  /orders/{order}:
+  /orders:
     post:
       tags:
         - order
       summary: Add a new order to the Orders table
       description: Add a new order to the Orders table
       operationId: addOrder
-      parameters:
-        - in: query
-          name: order
-          schema:
-            type: object
-          description: The new order being added to the Orders table
       requestBody:
         description: Create a new order in Orders
         content:
