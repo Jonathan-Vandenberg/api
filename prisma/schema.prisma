@@ -1,0 +1,121 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum ListingType {
+  x
+  OFFER
+  SELL
+  AUCTION
+}
+
+enum ListingStatus {
+  ACTIVE
+  COMPLETED
+  CANCELED
+  EXPIRED
+}
+
+enum OrderStatus {
+  EXECUTED
+  PENDING
+}
+
+enum AuctionStatus {
+  ENDED
+  ONGOING
+  PAUSED
+  SCHEDULED
+  CANCELED
+}
+
+enum AuctionType {
+  DUTCH
+}
+
+enum BidStatus {
+  ACCEPTED
+  PENDING
+  REJECTED
+  CANCELED
+}
+
+model Listing {
+  id                String            @id @default(cuid()) @map("_id")
+  type              ListingType
+  userId            String
+  assetId           String
+  quantity          Int
+  price             Int
+  status            ListingStatus
+  expirationDate    DateTime?
+  signature         String?
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  auction           Auction?
+  trades            Trade[]
+  listingActivities ListingActivity[]
+}
+
+model Auction {
+  id            String            @id @map("_id")
+  listingId     String            @unique
+  status        AuctionStatus
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  listing       Listing           @relation(fields: [listingId], references: [id])
+  bids          Bid[]
+  auctionEvents AuctionActivity[]
+}
+
+model AuctionActivity {
+  id        String   @id @map("_id")
+  auctionId String
+  reference Json?
+  createdAt DateTime @default(now())
+  auction   Auction  @relation(fields: [auctionId], references: [id])
+}
+
+model ListingActivity {
+  id        String   @id @map("_id")
+  listingId String
+  reference Json?
+  createdAt DateTime @default(now())
+  listing   Listing  @relation(fields: [listingId], references: [id])
+}
+
+model Order {
+  id        String      @id @map("_id")
+  userId    String
+  eventId   String      @unique
+  status    OrderStatus
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  trades    Trade[]
+}
+
+model Trade {
+  id        String   @id @map("_id")
+  orderId   String
+  listingId String
+  quantity  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  order     Order    @relation(fields: [orderId], references: [id])
+  listing   Listing  @relation(fields: [listingId], references: [id])
+}
+
+model Bid {
+  id        String    @id @map("_id")
+  auctionId String
+  price     Int
+  status    BidStatus
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  auction   Auction   @relation(fields: [auctionId], references: [id])
+}

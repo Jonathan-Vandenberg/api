@@ -1,15 +1,44 @@
-const express = require('express');
+import express from 'express';
+import { createListingController, getAllListingsController } from './modules/listing/controllers/ListingController';
+import { createTradeController, getAllTradesController, getTradeController, updateTradeController, deleteTradeController } from './modules/trade/controllers/TradeController';
+import { createAuctionController, getAllAuctionsController, getAuctionController, updateAuctionController, deleteAuctionController } from './modules/auction/controllers/AuctionController';
+import { createBidController, getAllBidsController, getBidController, updateBidController, deleteBidController } from './modules/bid/controllers/BidController';
+
 const app = express();
-const port = process.env.PORT || "159.89.204.177";
+const cors = require('cors');
+const port = process.env.PORT || 8080; // Change the port to the desired port number
 
 // Middleware to parse JSON request bodies
 app.use(express.json());
 
-// Define routes
-const orderRoutes = require('./routes/order');
+app.use(cors({
+  origin: '*',
+}));
 
-// Use the order routes
-app.use('/orders', orderRoutes);
+// Listing routes
+// app.get('/listings', getAllListingsController);
+app.post('/create-listing', createListingController);
+
+// Trade routes
+// app.get('/trades', getAllTradesController);
+// app.get('/trades/:id', getTradeController);
+// app.post('/trades', createTradeController);
+// app.put('/trades/:id', updateTradeController);
+// app.delete('/trades/:id', deleteTradeController);
+
+// Auction routes
+// app.get('/auctions', getAllAuctionsController);
+// app.get('/auctions/:id', getAuctionController);
+// app.post('/auctions', createAuctionController);
+// app.put('/auctions/:id', updateAuctionController);
+// app.delete('/auctions/:id', deleteAuctionController);
+
+// Bid routes
+// app.get('/bids', getAllBidsController);
+// app.get('/bids/:id', getBidController);
+// app.post('/bids', createBidController);
+// app.put('/bids/:id', updateBidController);
+// app.delete('/bids/:id', deleteBidController);
 
 // Start the server
 app.listen(port, () => {
