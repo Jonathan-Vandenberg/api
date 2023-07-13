@@ -48,8 +48,11 @@ paths:
       description: Add a new order to the Orders table
       operationId: addOrder
       parameters:
-        - in: path
+        - in: query
           name: order
+          schema:
+            type: object
+          description: The new order being added to the Orders table
       requestBody:
         description: Create a new order in Orders
         content:
