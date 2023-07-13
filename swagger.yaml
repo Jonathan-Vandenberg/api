@@ -45,6 +45,18 @@ paths:
       responses:
         '200':
           description: OK
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized.
+        '404':
+          description: Not found
+        '5XX':
+            description: Unexpected error.
     get:
       responses:
         '200':
@@ -337,6 +349,13 @@ paths:
           description: OK
 components:
   schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: integer
     OrderCreateInput:
       type: object
       properties:
