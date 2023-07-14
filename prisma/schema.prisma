@@ -76,7 +76,7 @@ model Auction {
 model AuctionActivity {
   id        String   @id @default(cuid()) @map("_id")
   auctionId String
-  reference Json?
+  reference String
   createdAt DateTime @default(now())
   auction   Auction  @relation(fields: [auctionId], references: [id])
 }
@@ -84,7 +84,7 @@ model AuctionActivity {
 model ListingActivity {
   id        String   @id @default(cuid()) @map("_id")
   listingId String
-  reference Json?
+  reference String
   createdAt DateTime @default(now())
   listing   Listing  @relation(fields: [listingId], references: [id])
 }
