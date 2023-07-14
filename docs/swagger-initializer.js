@@ -1,3 +1,5 @@
+import { SwaggerUIKongTheme } from 'swagger-ui-kong-theme'
+
 window.onload = function() {
   //<editor-fold desc="Changeable Configuration Block">
 
