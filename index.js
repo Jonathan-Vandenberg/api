@@ -1,18 +1,11 @@
 import express from 'express';
-import { getAllListingsController,
-  getListingByIdController,
-  createListingController,
-  updateListingController,
-  deleteListingController } from './modules/listing/controllers/ListingController';
-import { createTradeController, getAllTradesController, getTradeByIdController, updateTradeController, deleteTradeController } from './modules/trade/controllers/TradeController';
+import { getAllListingsController, getListingByIdController, createListingController, updateListingController, deleteListingController } from './modules/listing/controllers/ListingController';
+import { getAllListingActivitiesController, getListingActivityByIdController, createListingActivityController, deleteListingActivityController, updateListingActivityController } from './modules/listing-activity/controllers/ListingActivityController'
 import { createAuctionController, getAllAuctionsController, getAuctionByIdController, updateAuctionController, deleteAuctionController } from './modules/auction/controllers/AuctionController';
+import { createAuctionActivityController, getAllAuctionActivitiesController, getAuctionActivityByIdController, updateAuctionActivityController, deleteAuctionActivityController } from './modules/auction-activity/controllers/AuctionActivityController';
+import { createTradeController, getAllTradesController, getTradeByIdController, updateTradeController, deleteTradeController } from './modules/trade/controllers/TradeController';
 import { createBidController, getAllBidsController, getBidByIdController, updateBidController, deleteBidController } from './modules/bid/controllers/BidController';
-import { getAllOrdersController,
-  getOrderByIdController,
-  createOrderController,
-  updateOrderController,
-  deleteOrderController } from './modules/order/controllers/OrderController';
-import { getAllListingActivitiesController } from './modules/listing-activity/controllers/ListingActivityController'
+import { getAllOrdersController, getOrderByIdController, createOrderController, updateOrderController, deleteOrderController } from './modules/order/controllers/OrderController';
 
 const app = express();
 const cors = require('cors');
