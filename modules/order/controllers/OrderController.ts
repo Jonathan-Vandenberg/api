@@ -1,46 +1,71 @@
 import { Request, Response } from 'express';
+import OrderService from '../services/OrderService';
+import { Order } from '@prisma/client';
 
-// Get all orders
-export const getAllOrdersController = (req: Request, res: Response) => {
-    // Logic to fetch all orders from the database
-    // Return the orders as a response
+// Get all trades
+export const getAllOrdersController = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const orders: Order[] = await OrderService.getAllOrders();
+        res.json(orders);
+    } catch (error) {
+        console.error('Error retrieving orders:', error);
+        res.status(500).json({ error: 'Failed to retrieve orders' });
+    }
 };
 
-// Get a specific order
-export const getOrderController = (req: Request, res: Response) => {
-    // Extract the order ID from the request parameters
+// Get a trade by ID
+export const getOrderByIdController = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
-
-    // Logic to fetch the order with the specified ID from the database
-    // Return the order as a response
+    try {
+        const order: Order | null = await OrderService.getOrderById(id);
+        if (order) {
+            res.json(order);
+        } else {
+            res.status(404).json({ error: 'Order not found' });
+        }
+    } catch (error) {
+        console.error('Error retrieving order:', error);
+        res.status(500).json({ error: 'Failed to retrieve order' });
+    }
 };
 
-// Create a new order
-export const createOrderController = (req: Request, res: Response) => {
-    // Extract the order data from the request body
-    const { customerId, totalPrice, items } = req.body;
-
-    // Logic to create a new order in the database using the provided data
-    // Return the newly created order as a response
+// Create a new trade
+export const createOrderController = async (req: Request, res: Response): Promise<void> => {
+    const orderData: Order = req.body;
+    try {
+        const order: Order | null = await OrderService.createOrder(orderData);
+        res.status(201).json(order);
+    } catch (error) {
+        console.error('Error creating order:', error);
+        res.status(500).json({ error: 'Failed to create order' });
+    }
 };
 
-// Update an order
-export const updateOrderController = (req: Request, res: Response) => {
-    // Extract the order ID from the request parameters
+// Update a trade by ID
+export const updateOrderController = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
-
-    // Extract the updated order data from the request body
-    const { customerId, totalPrice, items } = req.body;
-
-    // Logic to update the order with the specified ID in the database using the updated data
-    // Return the updated order as a response
+    const orderData: Order = req.body;
+    try {
+        const updatedOrder: Order | null = await OrderService.updateOrder(id, orderData);
+        if (updatedOrder) {
+            res.json(updatedOrder);
+        } else {
+            res.status(404).json({ error: 'Order not found' });
+        }
+    } catch (error) {
+        console.error('Error updating trade:', error);
+        res.status(500).json({ error: 'Failed to update order' });
+    }
 };
 
-// Delete an order
-export const deleteOrderController = (req: Request, res: Response) => {
-    // Extract the order ID from the request parameters
+// Delete a trade by ID
+export const deleteOrderController = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
-
-    // Logic to delete the order with the specified ID from the database
-    // Return a success message as a response
+    try {
+        await OrderService.deleteOrder(id);
+        res.json({ message: 'Order deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting order:', error);
+        res.status(500).json({ error: 'Failed to delete order' });
+    }
 };

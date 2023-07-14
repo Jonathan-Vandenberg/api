@@ -1,46 +1,71 @@
 import { Request, Response } from 'express';
+import BidService from '../services/BidService';
+import { Bid } from '@prisma/client';
 
-// Get all trades
-export const getAllBidsController = (req: Request, res: Response) => {
-    // Logic to fetch all trades from the database
-    // Return the trades as a response
+// Get all bids
+export const getAllBidsController = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const bids: Bid[] = await BidService.getAllBids();
+        res.json(bids);
+    } catch (error) {
+        console.error('Error retrieving trades:', error);
+        res.status(500).json({ error: 'Failed to retrieve trades' });
+    }
 };
 
-// Get a specific trade
-export const getBidController = (req: Request, res: Response) => {
-    // Extract the trade ID from the request parameters
+// Get a bid by ID
+export const getBidByIdController = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
-
-    // Logic to fetch the trade with the specified ID from the database
-    // Return the trade as a response
+    try {
+        const bid: Bid | null = await BidService.getBidById(id);
+        if (bid) {
+            res.json(bid);
+        } else {
+            res.status(404).json({ error: 'Bid not found' });
+        }
+    } catch (error) {
+        console.error('Error retrieving bid:', error);
+        res.status(500).json({ error: 'Failed to retrieve bid' });
+    }
 };
 
-// Create a new trade
-export const createBidController = (req: Request, res: Response) => {
-    // Extract the trade data from the request body
-    const { orderId, listingId, quantity } = req.body;
-
-    // Logic to create a new trade in the database using the provided data
-    // Return the newly created trade as a response
+// Create a new bid
+export const createBidController = async (req: Request, res: Response): Promise<void> => {
+    const tradeData: Bid = req.body;
+    try {
+        const trade: Bid | null = await BidService.createBid(tradeData);
+        res.status(201).json(trade);
+    } catch (error) {
+        console.error('Error creating trade:', error);
+        res.status(500).json({ error: 'Failed to create trade' });
+    }
 };
 
-// Update a trade
-export const updateBidController = (req: Request, res: Response) => {
-    // Extract the trade ID from the request parameters
+// Update a bid by ID
+export const updateBidController = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
-
-    // Extract the updated trade data from the request body
-    const { orderId, listingId, quantity } = req.body;
-
-    // Logic to update the trade with the specified ID in the database using the updated data
-    // Return the updated trade as a response
+    const bidData: Bid = req.body;
+    try {
+        const updatedBid: Bid | null = await BidService.updateBid(id, bidData);
+        if (updatedBid) {
+            res.json(updatedBid);
+        } else {
+            res.status(404).json({ error: 'Bid not found' });
+        }
+    } catch (error) {
+        console.error('Error updating bid:', error);
+        res.status(500).json({ error: 'Failed to update bid' });
+    }
 };
 
-// Delete a trade
-export const deleteBidController = (req: Request, res: Response) => {
-    // Extract the trade ID from the request parameters
+// Delete a bid by ID
+export const deleteBidController = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
-
-    // Logic to delete the trade with the specified ID from the database
-    // Return a success message as a response
+    try {
+        await BidService.deleteBid(id);
+        res.json({ message: 'Bid deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting bid:', error);
+        res.status(500).json({ error: 'Failed to delete bid' });
+    }
 };

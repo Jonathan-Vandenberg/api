@@ -1,5 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-import { Bid } from '../../../types';
+import { PrismaClient, Bid } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -8,19 +7,49 @@ const getAllBids = async (): Promise<Bid[]> => {
     return prisma.bid.findMany();
 };
 
+// Get a bid by ID
+const getBidById = async (id: string): Promise<Bid | null> => {
+    return prisma.bid.findUnique({
+        where: { id },
+    });
+};
+
 // Create a new bid
-const createBid = async (data: Bid): Promise<Bid> => {
-    return prisma.bid.create({ data });
+const createBid = async (bidData: Bid): Promise<Bid | null> => {
+    const { auctionId, price, status } = bidData;
+    return prisma.bid.create({
+        data: {
+            auctionId,
+            price,
+            status,
+        },
+    });
 };
 
-// Update a bid
-const updateBid = async (id: string, data: Bid): Promise<Bid | null> => {
-    return prisma.bid.update({ where: { id }, data });
+// Update a bid by ID
+const updateBid = async (id: string, bidData: Bid): Promise<Bid | null> => {
+    const { auctionId, price, status } = bidData;
+    return prisma.bid.update({
+        where: { id },
+        data: {
+            auctionId,
+            price,
+            status,
+        },
+    });
 };
 
-// Delete a bid
-const deleteBid = async (id: string): Promise<Bid | null> => {
-    return prisma.bid.delete({ where: { id } });
+// Delete a bid by ID
+const deleteBid = async (id: string): Promise<void> => {
+    await prisma.bid.delete({
+        where: { id },
+    });
 };
 
-export { getAllBids, createBid, updateBid, deleteBid };
+export default {
+    getAllBids,
+    getBidById,
+    createBid,
+    updateBid,
+    deleteBid,
+};

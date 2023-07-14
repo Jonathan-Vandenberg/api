@@ -1,7 +1,7 @@
 import express from 'express';
 import {
     getAllAuctionsController,
-    getAuctionController,
+    getAuctionByIdController,
     createAuctionController,
     updateAuctionController,
     deleteAuctionController
@@ -13,7 +13,7 @@ const router = express.Router();
 router.get('/', getAllAuctionsController);
 
 // Get a specific auction
-router.get('/:id', getAuctionController);
+router.get('/:id', getAuctionByIdController);
 
 // Create a new auction
 router.post('/', createAuctionController);

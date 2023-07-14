@@ -1,7 +1,7 @@
 import express from 'express';
 import {
     getAllBidsController,
-    getBidController,
+    getBidByIdController,
     createBidController,
     updateBidController,
     deleteBidController
@@ -13,7 +13,7 @@ const router = express.Router();
 router.get('/', getAllBidsController);
 
 // Get a specific bid
-router.get('/:id', getBidController);
+router.get('/:id', getBidByIdController);
 
 // Create a new bid
 router.post('/', createBidController);

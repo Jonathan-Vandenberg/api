@@ -1,108 +1,71 @@
 import { Request, Response } from 'express';
-import { Listing, ListingType, ListingStatus, ListingActivity } from '@prisma/client';
-import {
-    // getAllListings,
-    createListing,
-    // updateListing,
-    deleteListing,
-    getListing
-} from '../services/ListingService';
+import ListingService from '../services/ListingService';
+import { Listing } from '@prisma/client';
 
 // Get all listings
-// export const getAllListingsController = async (req: Request, res: Response) => {
-//     try {
-//         const listings: Listing[] = await getAllListings();
-//         res.json(listings);
-//     } catch (error) {
-//         res.status(500).json({ error: 'Failed to fetch listings' });
-//     }
-// };
-
-// Get a specific listing
-export const getListingController = async (req: Request, res: Response) => {
+export const getAllListingsController = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { id } = req.params;
-        const listing: Listing | null = await getListing(id);
+        const listings: Listing[] = await ListingService.getAllListings();
+        res.json(listings);
+    } catch (error) {
+        console.error('Error retrieving listings:', error);
+        res.status(500).json({ error: 'Failed to retrieve listings' });
+    }
+};
 
+// Get a listing by ID
+export const getListingByIdController = async (req: Request, res: Response): Promise<void> => {
+    const { id } = req.params;
+    try {
+        const listing: Listing | null = await ListingService.getListingById(id);
         if (listing) {
             res.json(listing);
         } else {
-            res.status(404).json({ error: 'Listing not found' });
+            res.status(404).json({ error: 'listing not found' });
         }
     } catch (error) {
-        res.status(500).json({ error: 'Failed to fetch listing' });
+        console.error('Error retrieving listing:', error);
+        res.status(500).json({ error: 'Failed to retrieve listing' });
     }
 };
 
 // Create a new listing
-export const createListingController = async (req: Request, res: Response) => {
+export const createListingController = async (req: Request, res: Response): Promise<void> => {
+    const listingData: Listing = req.body;
     try {
-        console.log('Sending new listing...')
-        const { type, userId, assetId, quantity, price, status, expirationDate, signature, id } = req.body;
-        const newListing: Listing = await createListing({
-            id, // Provide a unique ID for the new listing
-            type: type as ListingType, // Cast to ListingType
-            userId,
-            assetId,
-            quantity,
-            price,
-            status: status as ListingStatus, // Cast to ListingStatus
-            expirationDate,
-            signature,
-            createdAt: new Date(), // Set the creation timestamp
-            updatedAt: new Date(), // Set the update timestamp
-        });
-        res.status(201).json(newListing)
-        console.log('New listing sent...');
+        const listing: Listing | null = await ListingService.createListing(listingData);
+        res.status(201).json(listing);
     } catch (error) {
+        console.error('Error creating listing:', error);
         res.status(500).json({ error: 'Failed to create listing' });
     }
 };
 
-// Update a listing
-// export const updateListingController = async (req: Request, res: Response) => {
-//     try {
-//         const { id } = req.params;
-//         const { assetId, quantity, status, trades, type, userId, price, listingActivities } = req.body;
-//
-//         const updatedListing: Listing | null = await updateListing(id, {
-//             expirationDate: new Date(),
-//             signature: "",
-//             id, // Include the existing ID in the update
-//             assetId,
-//             quantity,
-//             status: status as ListingStatus, // Cast to ListingStatus
-//             trades,
-//             type: type as ListingType, // Cast to ListingType
-//             userId,
-//             price,
-//             createdAt: new Date(), // Set the creation timestamp
-//             updatedAt: new Date(), // Set the update timestamp
-//             listingActivities: listingActivities as ListingActivity// Initialize an empty array for listing activities
-//         });
-//
-//         if (updatedListing) {
-//             res.json(updatedListing);
-//         } else {
-//             res.status(404).json({ error: 'Listing not found' });
-//         }
-//     } catch (error) {
-//         res.status(500).json({ error: 'Failed to update listing' });
-//     }
-// };
-
-// Delete a listing
-export const deleteListingController = async (req: Request, res: Response) => {
+// Update a listing by ID
+export const updateListingController = async (req: Request, res: Response): Promise<void> => {
+    const { id } = req.params;
+    const listingData: Listing = req.body;
     try {
-        const { id } = req.params;
-        const deletedListing: Listing | null = await deleteListing(id);
-
-        if (deletedListing) {
-            res.json(deletedListing);
+        const updatedListing: Listing | null = await ListingService.updateListing(id, listingData);
+        if (updatedListing) {
+            res.json(updatedListing);
         } else {
             res.status(404).json({ error: 'Listing not found' });
         }
     } catch (error) {
+        console.error('Error updating listing:', error);
+        res.status(500).json({ error: 'Failed to update listing' });
+    }
+};
+
+// Delete a listing by ID
+export const deleteListingController = async (req: Request, res: Response): Promise<void> => {
+    const { id } = req.params;
+    try {
+        await ListingService.deleteListing(id);
+        res.json({ message: 'Listing deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting listing:', error);
         res.status(500).json({ error: 'Failed to delete listing' });
     }
 };

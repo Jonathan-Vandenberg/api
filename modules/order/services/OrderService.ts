@@ -1,40 +1,55 @@
-import { PrismaClient } from '@prisma/client';
-import { Order } from '../../../types';
+import { PrismaClient, Order } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
 // Get all orders
 const getAllOrders = async (): Promise<Order[]> => {
-    return prisma.order.findMany({
-        include: {
-            trades: true
-        }
+    return prisma.order.findMany();
+};
+
+// Get an order by ID
+const getOrderById = async (id: string): Promise<Order | null> => {
+    return prisma.order.findUnique({
+        where: { id },
     });
 };
 
 // Create a new order
-const createOrder = async (data: Order): Promise<Order> => {
-    const { trades, ...orderData } = data;
-
+const createOrder = async (tradeData: Order): Promise<Order | null> => {
+    const { userId, eventId, status } = tradeData;
     return prisma.order.create({
         data: {
-            ...orderData,
-            trades: {
-                create: trades,
-            },
+            userId,
+            eventId,
+            status,
         },
     });
 };
 
-
-// Update an order
-const updateOrder = async (id: string, data: Order): Promise<Order | null> => {
-    return prisma.order.update({ where: { id }, data });
+// Update an order by ID
+const updateOrder = async (id: string, tradeData: Order): Promise<Order | null> => {
+    const { userId, eventId, status } = tradeData;
+    return prisma.order.update({
+        where: { id },
+        data: {
+            userId,
+            eventId,
+            status,
+        },
+    });
 };
 
-// Delete an order
-const deleteOrder = async (id: string): Promise<Order | null> => {
-    return prisma.order.delete({ where: { id } });
+// Delete a order by ID
+const deleteOrder = async (id: string): Promise<void> => {
+    await prisma.order.delete({
+        where: { id },
+    });
 };
 
-export { getAllOrders, createOrder, updateOrder, deleteOrder };
+export default {
+    getAllOrders,
+    getOrderById,
+    createOrder,
+    updateOrder,
+    deleteOrder,
+};

@@ -1,7 +1,7 @@
 import express from 'express';
 import {
     getAllOrdersController,
-    getOrderController,
+    getOrderByIdController,
     createOrderController,
     updateOrderController,
     deleteOrderController
@@ -13,7 +13,7 @@ const router = express.Router();
 router.get('/', getAllOrdersController);
 
 // Get a specific order
-router.get('/:id', getOrderController);
+router.get('/:id', getOrderByIdController);
 
 // Create a new order
 router.post('/', createOrderController);

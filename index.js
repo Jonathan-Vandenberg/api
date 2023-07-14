@@ -1,8 +1,17 @@
 import express from 'express';
-import { createListingController, getAllListingsController } from './modules/listing/controllers/ListingController';
+import { getAllListingsController,
+  getListingByIdController,
+  createListingController,
+  updateListingController,
+  deleteListingController } from './modules/listing/controllers/ListingController';
 import { createTradeController, getAllTradesController, getTradeByIdController, updateTradeController, deleteTradeController } from './modules/trade/controllers/TradeController';
-import { createAuctionController, getAllAuctionsController, getAuctionController, updateAuctionController, deleteAuctionController } from './modules/auction/controllers/AuctionController';
-import { createBidController, getAllBidsController, getBidController, updateBidController, deleteBidController } from './modules/bid/controllers/BidController';
+import { createAuctionController, getAllAuctionsController, getAuctionByIdController, updateAuctionController, deleteAuctionController } from './modules/auction/controllers/AuctionController';
+import { createBidController, getAllBidsController, getBidByIdController, updateBidController, deleteBidController } from './modules/bid/controllers/BidController';
+import { getAllOrdersController,
+  getOrderByIdController,
+  createOrderController,
+  updateOrderController,
+  deleteOrderController } from './modules/order/controllers/OrderController';
 
 const app = express();
 const cors = require('cors');
@@ -16,8 +25,11 @@ app.use(cors({
 }));
 
 // Listing routes
-// app.get('/listings', getAllListingsController);
-app.post('/create-listing', createListingController);
+app.get('/listing', getAllListingsController);
+app.get('/listing/:id', getListingByIdController);
+app.post('/listing', createListingController);
+app.put('/listing/:id', updateListingController);
+app.delete('/listing/:id', deleteListingController);
 
 // Trade routes
 app.get('/trade', getAllTradesController);
@@ -26,19 +38,26 @@ app.post('/trade', createTradeController);
 app.put('/trade/:id', updateTradeController);
 app.delete('/trade/:id', deleteTradeController);
 
-// // Auction routes
-// app.get('/auctions', getAllAuctionsController);
-// app.get('/auctions/:id', getAuctionController);
-// app.post('/auctions', createAuctionController);
-// app.put('/auctions/:id', updateAuctionController);
-// app.delete('/auctions/:id', deleteAuctionController);
-//
-// // Bid routes
-// app.get('/bids', getAllBidsController);
-// app.get('/bids/:id', getBidController);
-// app.post('/bids', createBidController);
-// app.put('/bids/:id', updateBidController);
-// app.delete('/bids/:id', deleteBidController);
+// Order routes
+app.get('/order', getAllOrdersController);
+app.get('/order/:id', getOrderByIdController);
+app.post('/order', createOrderController);
+app.put('/order/:id', updateOrderController);
+app.delete('/order/:id', deleteOrderController);
+
+// Auction routes
+app.get('/auction', getAllAuctionsController);
+app.get('/auctions/:id', getAuctionByIdController);
+app.post('/auction', createAuctionController);
+app.put('/auction/:id', updateAuctionController);
+app.delete('/auction/:id', deleteAuctionController);
+
+// Bid routes
+app.get('/bid', getAllBidsController);
+app.get('/bid/:id', getBidByIdController);
+app.post('/bid', createBidController);
+app.put('/bid/:id', updateBidController);
+app.delete('/bid/:id', deleteBidController);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

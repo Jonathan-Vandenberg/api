@@ -1,62 +1,58 @@
-import {Listing, PrismaClient} from '@prisma/client';
+import { PrismaClient, Listing } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-
 // Get all listings
-// const getAllListings = async (): Promise<Listing[]> => {
-//     const listings = await prisma.listing.findMany();
-//     return listings.map((listing) => ({
-//         ...listing,
-//         trades: listing.trades || [],
-//         listingActivities: listing.listingActivities as ListingActivity[] || [],
-//     }));
-// };
+export const getAllListings = async (): Promise<Listing[]> => {
+    return prisma.listing.findMany();
+};
 
-// Get a specific listing
-const getListing = async (id: string): Promise<Listing | null> => {
-    return prisma.listing.findUnique({ where: { id } });
+// Get a listing by ID
+export const getListingById = async (id: string): Promise<Listing | null> => {
+    return prisma.listing.findUnique({
+        where: { id },
+    });
 };
 
 // Create a new listing
-const createListing = async (listingData: Listing) => {
-    try {
-        return await prisma.listing.create({
-            data: listingData,
-        });
-    } catch (error) {
-        // Handle error
-        console.error('Failed to create listing:', error);
-        throw error;
-    }
+export const createListing = async (listingData: Listing): Promise<Listing | null> => {
+    const { type, userId, assetId, quantity, price, status, expirationDate, signature  } = listingData;
+    return prisma.listing.create({
+        data: {
+            type,
+            userId,
+            assetId,
+            quantity,
+            price,
+            status,
+            expirationDate,
+            signature
+        },
+    });
 };
 
-// Update a listing
-// const updateListing = async (id: string, data: {
-//     listingActivities: ListingActivity;
-//     quantity: any;
-//     signature: string;
-//     trades: any;
-//     type: ListingType;
-//     userId: any;
-//     createdAt: Date;
-//     assetId: any;
-//     price: any;
-//     id: string;
-//     expirationDate: Date;
-//     status: ListingStatus;
-//     updatedAt: Date
-// }): Promise<Listing | null> => {
-//     return prisma.listing.update({ where: { id }, data });
-// };
-
-// Delete a listing
-const deleteListing = async (id: string): Promise<Listing | null> => {
-    return prisma.listing.delete({ where: { id } });
+// Update a listing by ID
+export const updateListing = async (id: string, tradeData: Listing): Promise<Listing | null> => {
+    const { type, userId, assetId, quantity, price, status, expirationDate, signature } = tradeData;
+    return prisma.listing.update({
+        where: { id },
+        data: {
+            type, userId, assetId, quantity, price, status, expirationDate, signature
+        },
+    });
 };
 
-export {
-    getListing,
+// Delete a listing by ID
+export const deleteListing = async (id: string): Promise<void> => {
+    await prisma.listing.delete({
+        where: { id },
+    });
+};
+
+export default {
+    getAllListings,
+    getListingById,
     createListing,
-    deleteListing
+    updateListing,
+    deleteListing,
 };
