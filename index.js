@@ -12,6 +12,7 @@ import { getAllOrdersController,
   createOrderController,
   updateOrderController,
   deleteOrderController } from './modules/order/controllers/OrderController';
+import { getAllListingActivitiesController } from './modules/listing-activity/controllers/ListingActivityController'
 
 const app = express();
 const cors = require('cors');
@@ -30,6 +31,13 @@ app.get('/listing/:id', getListingByIdController);
 app.post('/listing', createListingController);
 app.put('/listing/:id', updateListingController);
 app.delete('/listing/:id', deleteListingController);
+
+// ListingActivity routes
+app.get('/listing-activity', getAllListingActivitiesController);
+app.get('/listing-activity/:id', getListingActivityByIdController);
+app.post('/listing-activity', createListingActivityController);
+app.put('/listing-activity/:id', updateListingActivityController);
+app.delete('/listing-activity/:id', deleteListingActivityController);
 
 // Trade routes
 app.get('/trade', getAllTradesController);
@@ -51,6 +59,13 @@ app.get('/auctions/:id', getAuctionByIdController);
 app.post('/auction', createAuctionController);
 app.put('/auction/:id', updateAuctionController);
 app.delete('/auction/:id', deleteAuctionController);
+
+// AuctionActivity routes
+app.get('/auction-activity', getAllAuctionActivitiesController);
+app.get('/auction-activity/:id', getAuctionActivityByIdController);
+app.post('/auction-activity', createAuctionActivityController);
+app.put('/auction-activity/:id', updateAuctionActivityController);
+app.delete('/auction-activity/:id', deleteAuctionActivityController);
 
 // Bid routes
 app.get('/bid', getAllBidsController);

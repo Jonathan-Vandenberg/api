@@ -197,7 +197,7 @@ paths:
       responses:
         '200':
           description: OK
-  /listingactivity:
+  /listing-activity:
     post:
       requestBody:
         content:
@@ -211,7 +211,7 @@ paths:
       responses:
         '200':
           description: OK
-  /listingactivity/{id}:
+  /listing-activity/{id}:
     get:
       parameters:
         - name: id
@@ -284,6 +284,56 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AuctionUpdateInput'
+      responses:
+        '200':
+          description: OK
+    delete:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+  /aution-activity:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuctionActivityCreateInput'
+      responses:
+        '200':
+          description: OK
+    get:
+      responses:
+        '200':
+          description: OK
+  /auction-activity/{id}:
+    get:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+    put:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuctionActivityUpdateInput'
       responses:
         '200':
           description: OK
@@ -460,6 +510,20 @@ components:
           type: string
         status:
           $ref: '#/components/schemas/AuctionStatus'
+    AuctionActivityCreateInput:
+      type: object
+      properties:
+        listingId:
+          type: string
+        reference:
+          type: object
+    AuctionActivityUpdateInput:
+      type: object
+      properties:
+        listingId:
+          type: string
+        reference:
+          type: object
     BidCreateInput:
       type: object
       properties:
