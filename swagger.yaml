@@ -495,7 +495,7 @@ components:
         listingId:
           type: string
         reference:
-          type: object
+          type: string
     AuctionCreateInput:
       type: object
       properties:
@@ -516,14 +516,14 @@ components:
         listingId:
           type: string
         reference:
-          type: object
+          type: string
     AuctionActivityUpdateInput:
       type: object
       properties:
         listingId:
           type: string
         reference:
-          type: object
+          type: string
     BidCreateInput:
       type: object
       properties:
