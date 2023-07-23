@@ -11,7 +11,6 @@ const app = express();
 const cors = require('cors');
 const port = process.env.PORT || 8080; // Change the port to the desired port number
 
-// Middleware to parse JSON request bodies
 app.use(express.json());
 
 app.use(cors({

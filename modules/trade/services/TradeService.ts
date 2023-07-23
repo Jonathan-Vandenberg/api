@@ -1,6 +1,5 @@
 import { PrismaClient, Trade } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import prisma from '../../../prisma/prisma'
 
 // Get all trades
 const getAllTrades = async (): Promise<Trade[]> => {

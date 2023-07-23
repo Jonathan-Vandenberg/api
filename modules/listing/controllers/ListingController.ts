@@ -32,6 +32,10 @@ export const getListingByIdController = async (req: Request, res: Response): Pro
 // Create a new listing
 export const createListingController = async (req: Request, res: Response): Promise<void> => {
     const listingData: Listing = req.body;
+
+    // Prisma Middleware (testing)
+    // useTaggedStatusLogger(listingData.id)
+
     try {
         const listing: Listing | null = await ListingService.createListing(listingData);
         res.status(201).json(listing);

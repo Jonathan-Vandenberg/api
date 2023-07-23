@@ -1,6 +1,5 @@
 import { PrismaClient, ListingActivity } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import prisma from '../../../prisma/prisma'
 
 // Get all listings
 export const getAllListingActivities = async (): Promise<ListingActivity[]> => {

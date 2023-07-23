@@ -1,582 +1,252 @@
 openapi: 3.0.3
-x-stoplight:
-  id: 3ngl049ongtqy
 info:
-  title: Arttaca - OpenAPI 3.0
-  description: |-
-    This is the Arttaca API documentation based on the OpenAPI 3.0 specification.
+  title: Asset Inventory API
+  version: 1.0.0
+  description: API for managing assets and listings in the inventory.
 
-    Some useful links:
-    - [Arttaca](https://arttaca.io)
-    - [The Arttaca GitHub repository](https://github.com/Arttaca)
-  termsOfService: 'https://arttaca.io/'
-  contact:
-    email: leon@dandelionventures.io
-    name: Leon Acosta
-    url: leon@dandelionventures.io
-  license:
-    name: Apache 2.0
-    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
-  version: 1.0.11
-externalDocs:
-  description: Find out more about Arttaca
-  url: 'https://arttaca.io/about'
-servers:
-  - url: 'http://localhost:8080'
-tags:
-  - name: order
-    description: Everything about orders
-    externalDocs:
-      description: Find out more
-      url: 'https://arttaca.io/about'
-  - name: trade
-    description: Everything about trades
-    externalDocs:
-      description: Find out more about Arttaca
-      url: 'https://arttaca.io/about'
 paths:
-  /order:
-    post:
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/OrderCreateInput'
+  /assets/{userAddress}:
+    get:
+      summary: Get all assets for a user
+      description: |
+        Retrieves all the assets owned by a user with the given address.
+        The API requires an authentication token in the header, specifying either user or admin.
+      parameters:
+        - name: userAddress
+          in: path
+          description: The Ethereum address of the user.
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: OK
-        '400':
-          description: Bad Request.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '401':
-          description: Unauthorized.
-        '404':
-          description: Not found
-        '5XX':
-            description: Unexpected error.
+                type: object
+                properties:
+                  assets:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          description: Name of the token.
+                        collection:
+                          type: object
+                          properties:
+                            chainId:
+                              type: integer
+                              description: The chain ID of the collection.
+                            name:
+                              type: string
+                              description: Name of the collection.
+                            standard:
+                              type: string
+                              description: Type of token standard.
+                        collectionAddress:
+                          type: string
+                          description: Address of the collection.
+                        id:
+                          type: string
+                          description: ID of the asset.
+                        image:
+                          type: string
+                          description: Link to the thumbnail image.
+                        Listings:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              price:
+                                type: integer
+                                description: The price of the asset.
+                              endTime:
+                                type: integer
+                                description: The end time of the listing.
+                              status:
+                                type: integer
+                                description: The status of the listing.
+                              saleData:
+                                type: object
+                                properties:
+                                  expirationTimestamp:
+                                    type: integer
+                                    description: Expiration timestamp of the sale.
+                                  Lister:
+                                    type: string
+                                    description: Address of the lister.
+                                  ownerSignature:
+                                    type: string
+                                    description: Owner's signature.
+                                  Price:
+                                    type: integer
+                                    description: Price of the asset.
+
+  /assets/{addressOrShortUrl}/{nftId}:
     get:
+      summary: Get asset details for an NFT
+      description: |
+        Retrieves additional information about an asset in the inventory.
+      parameters:
+        - name: addressOrShortUrl
+          in: path
+          description: The Ethereum address or short URL of the user's collection.
+          required: true
+          schema:
+            type: string
+        - name: nftId
+          in: path
+          description: The ID of the NFT.
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: OK
-  /order/{id}:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  assets:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          description: Name of the token.
+                        collection:
+                          type: object
+                          properties:
+                            chainId:
+                              type: integer
+                              description: The chain ID of the collection.
+                            shortUrl:
+                              type: string
+                              description: Short URL of the collection.
+                            Name:
+                              type: string
+                              description: Name of the collection.
+                            Standard:
+                              type: string
+                              description: Type of token standard.
+                        collectionAddress:
+                          type: string
+                          description: Address of the collection.
+                        id:
+                          type: string
+                          description: ID of the asset.
+                        image:
+                          type: string
+                          description: Link to the asset image.
+                        Listings:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              price:
+                                type: integer
+                                description: The price of the asset.
+                              endTime:
+                                type: integer
+                                description: The end time of the listing.
+                              status:
+                                type: integer
+                                description: The status of the listing.
+                              saleData:
+                                type: object
+                                properties:
+                                  expirationTimestamp:
+                                    type: integer
+                                    description: Expiration timestamp of the sale.
+                                  Lister:
+                                    type: string
+                                    description: Address of the lister.
+                                  ownerSignature:
+                                    type: string
+                                    description: Owner's signature.
+                                  Price:
+                                    type: integer
+                                    description: Price of the asset.
+
+  /{userAddress}/{assetId}:
     get:
+      summary: Get asset details for an asset in the inventory
+      description: |
+        Retrieves detailed information about an asset in the inventory.
       parameters:
-        - name: id
+        - name: userAddress
           in: path
+          description: The Ethereum address of the user.
+          required: true
+          schema:
+            type: string
+        - name: assetId
+          in: path
+          description: The ID of the asset.
           required: true
           schema:
             type: string
       responses:
         '200':
           description: OK
-    put:
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/OrderUpdateInput'
-      responses:
-        '200':
-          description: OK
-    delete:
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: OK
-  /trade:
-    post:
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TradeCreateInput'
-      responses:
-        '200':
-          description: OK
-    get:
-      responses:
-        '200':
-          description: OK
-  /trade/{id}:
-    get:
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: OK
-    put:
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TradeUpdateInput'
-      responses:
-        '200':
-          description: OK
-    delete:
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: OK
-  /listing:
-    post:
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ListingCreateInput'
-      responses:
-        '200':
-          description: OK
-    get:
-      responses:
-        '200':
-          description: OK
-  /listing/{id}:
-    get:
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: OK
-    put:
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ListingUpdateInput'
-      responses:
-        '200':
-          description: OK
-    delete:
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: OK
-  /listing-activity:
-    post:
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ListingActivityCreateInput'
-      responses:
-        '200':
-          description: OK
-    get:
-      responses:
-        '200':
-          description: OK
-  /listing-activity/{id}:
-    get:
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: OK
-    put:
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ListingActivityUpdateInput'
-      responses:
-        '200':
-          description: OK
-    delete:
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: OK
-  /auction:
-    post:
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AuctionCreateInput'
-      responses:
-        '200':
-          description: OK
-    get:
-      responses:
-        '200':
-          description: OK
-  /auction/{id}:
-    get:
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: OK
-    put:
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AuctionUpdateInput'
-      responses:
-        '200':
-          description: OK
-    delete:
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: OK
-  /aution-activity:
-    post:
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AuctionActivityCreateInput'
-      responses:
-        '200':
-          description: OK
-    get:
-      responses:
-        '200':
-          description: OK
-  /auction-activity/{id}:
-    get:
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: OK
-    put:
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AuctionActivityUpdateInput'
-      responses:
-        '200':
-          description: OK
-    delete:
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: OK
-  /bid:
-    post:
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BidCreateInput'
-      responses:
-        '200':
-          description: OK
-    get:
-      responses:
-        '200':
-          description: OK
-  /bid/{id}:
-    get:
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: OK
-    put:
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BidUpdateInput'
-      responses:
-        '200':
-          description: OK
-    delete:
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: OK
-components:
-  schemas:
-    ErrorResponse:
-      type: object
-      properties:
-        message:
-          type: string
-        code:
-          type: integer
-    OrderCreateInput:
-      type: object
-      properties:
-        userId:
-          type: string
-        eventId:
-          type: string
-        status:
-          $ref: '#/components/schemas/OrderStatus'
-    OrderUpdateInput:
-      type: object
-      properties:
-        userId:
-          type: string
-        eventId:
-          type: string
-        status:
-          $ref: '#/components/schemas/OrderStatus'
-    TradeCreateInput:
-      type: object
-      properties:
-        orderId:
-          type: string
-        listingId:
-          type: string
-        quantity:
-          type: integer
-    TradeUpdateInput:
-      type: object
-      properties:
-        orderId:
-          type: string
-        listingId:
-          type: string
-        quantity:
-          type: integer
-    ListingCreateInput:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/ListingType'
-        userId:
-          type: string
-        assetId:
-          type: string
-        quantity:
-          type: integer
-        price:
-          type: integer
-        status:
-          $ref: '#/components/schemas/ListingStatus'
-        expirationDate:
-          type: string
-          format: date-time
-        signature:
-          type: string
-    ListingUpdateInput:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/ListingType'
-        userId:
-          type: string
-        assetId:
-          type: string
-        quantity:
-          type: integer
-        price:
-          type: integer
-        status:
-          $ref: '#/components/schemas/ListingStatus'
-        expirationDate:
-          type: string
-          format: date-time
-        signature:
-          type: string
-    ListingActivityCreateInput:
-      type: object
-      properties:
-        listingId:
-          type: string
-        reference:
-          type: object
-    ListingActivityUpdateInput:
-      type: object
-      properties:
-        listingId:
-          type: string
-        reference:
-          type: string
-    AuctionCreateInput:
-      type: object
-      properties:
-        listingId:
-          type: string
-        status:
-          $ref: '#/components/schemas/AuctionStatus'
-    AuctionUpdateInput:
-      type: object
-      properties:
-        listingId:
-          type: string
-        status:
-          $ref: '#/components/schemas/AuctionStatus'
-    AuctionActivityCreateInput:
-      type: object
-      properties:
-        listingId:
-          type: string
-        reference:
-          type: string
-    AuctionActivityUpdateInput:
-      type: object
-      properties:
-        listingId:
-          type: string
-        reference:
-          type: string
-    BidCreateInput:
-      type: object
-      properties:
-        auctionId:
-          type: string
-        price:
-          type: integer
-        status:
-          $ref: '#/components/schemas/BidStatus'
-    BidUpdateInput:
-      type: object
-      properties:
-        auctionId:
-          type: string
-        price:
-          type: integer
-        status:
-          $ref: '#/components/schemas/BidStatus'
-    OrderStatus:
-      type: string
-      enum:
-        - EXECUTED
-        - PENDING
-    ListingType:
-      type: string
-      enum:
-        - x
-        - OFFER
-        - SELL
-        - AUCTION
-    ListingStatus:
-      type: string
-      enum:
-        - ACTIVE
-        - COMPLETED
-        - CANCELED
-        - EXPIRED
-    AuctionStatus:
-      type: string
-      enum:
-        - ENDED
-        - ONGOING
-        - PAUSED
-        - SCHEDULED
-        - CANCELED
-    AuctionType:
-      type: string
-      enum:
-        - DUTCH
-    BidStatus:
-      type: string
-      enum:
-        - ACCEPTED
-        - PENDING
-        - REJECTED
-        - CANCELED
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: Name of the token.
+                  collection:
+                    type: object
+                    properties:
+                      chainId:
+                        type: integer
+                        description: The chain ID of the collection.
+                      name:
+                        type: string
+                        description: Name of the collection.
+                      artistName:
+                        type: string
+                        description: Name of the artist.
+                      royaltyPercentage:
+                        type: number
+                        description: Royalty percentage.
+                      splitWithAddresses:
+                        type: array
+                        items:
+                          type: string
+                        description: Addresses for split-with (for avatar images).
+                      mintDate:
+                        type: string
+                        format: date-time
+                        description: Mint date of the asset.
+                      network:
+                        type: string
+                        description: Network (Ethereum).
+                      assetAddress:
+                        type: string
+                        description: Address of the asset.
+                      tokenStandard:
+                        type: string
+                        description: Token standard (ERC721).
+                  price:
+                    type: integer
+                    description: Price of the asset.
+                  status:
+                    type: integer
+                    description: Status of the asset.
+                  assetImage:
+                    type: string
+                    description: Link to the asset image.
+                  collectionThumbnailImage:
+                    type: string
+                    description: Link to the collection thumbnail image.
+                  blockExplorerLink:
+                    type: string
+                    description: Block explorer link for the asset.

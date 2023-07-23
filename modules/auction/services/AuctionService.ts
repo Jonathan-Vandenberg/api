@@ -1,6 +1,5 @@
 import { PrismaClient, Auction } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import prisma from '../../../prisma/prisma'
 
 // Get all auctions
 const getAllAuctions = async (): Promise<Auction[]> => {

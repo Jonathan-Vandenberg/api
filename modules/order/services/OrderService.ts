@@ -1,6 +1,5 @@
 import { PrismaClient, Order } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import prisma from '../../../prisma/prisma'
 
 // Get all orders
 const getAllOrders = async (): Promise<Order[]> => {
