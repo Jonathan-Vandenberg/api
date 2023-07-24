@@ -29,61 +29,7 @@ paths:
                   assets:
                     type: array
                     items:
-                      type: object
-                      properties:
-                        name:
-                          type: string
-                          description: Name of the token.
-                        collection:
-                          type: object
-                          properties:
-                            chainId:
-                              type: integer
-                              description: The chain ID of the collection.
-                            name:
-                              type: string
-                              description: Name of the collection.
-                            standard:
-                              type: string
-                              description: Type of token standard.
-                        collectionAddress:
-                          type: string
-                          description: Address of the collection.
-                        id:
-                          type: string
-                          description: ID of the asset.
-                        image:
-                          type: string
-                          description: Link to the thumbnail image.
-                        Listings:
-                          type: array
-                          items:
-                            type: object
-                            properties:
-                              price:
-                                type: integer
-                                description: The price of the asset.
-                              endTime:
-                                type: integer
-                                description: The end time of the listing.
-                              status:
-                                type: integer
-                                description: The status of the listing.
-                              saleData:
-                                type: object
-                                properties:
-                                  expirationTimestamp:
-                                    type: integer
-                                    description: Expiration timestamp of the sale.
-                                  Lister:
-                                    type: string
-                                    description: Address of the lister.
-                                  ownerSignature:
-                                    type: string
-                                    description: Owner's signature.
-                                  Price:
-                                    type: integer
-                                    description: Price of the asset.
+                      $ref: "#/components/schemas/Asset"
 
   /assets/{addressOrShortUrl}/{nftId}:
     get:
@@ -114,64 +60,7 @@ paths:
                   assets:
                     type: array
                     items:
-                      type: object
-                      properties:
-                        name:
-                          type: string
-                          description: Name of the token.
-                        collection:
-                          type: object
-                          properties:
-                            chainId:
-                              type: integer
-                              description: The chain ID of the collection.
-                            shortUrl:
-                              type: string
-                              description: Short URL of the collection.
-                            Name:
-                              type: string
-                              description: Name of the collection.
-                            Standard:
-                              type: string
-                              description: Type of token standard.
-                        collectionAddress:
-                          type: string
-                          description: Address of the collection.
-                        id:
-                          type: string
-                          description: ID of the asset.
-                        image:
-                          type: string
-                          description: Link to the asset image.
-                        Listings:
-                          type: array
-                          items:
-                            type: object
-                            properties:
-                              price:
-                                type: integer
-                                description: The price of the asset.
-                              endTime:
-                                type: integer
-                                description: The end time of the listing.
-                              status:
-                                type: integer
-                                description: The status of the listing.
-                              saleData:
-                                type: object
-                                properties:
-                                  expirationTimestamp:
-                                    type: integer
-                                    description: Expiration timestamp of the sale.
-                                  Lister:
-                                    type: string
-                                    description: Address of the lister.
-                                  ownerSignature:
-                                    type: string
-                                    description: Owner's signature.
-                                  Price:
-                                    type: integer
-                                    description: Price of the asset.
+                      $ref: "#/components/schemas/AssetDetails"
 
   /{userAddress}/{assetId}:
     get:
@@ -197,56 +86,97 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  name:
-                    type: string
-                    description: Name of the token.
-                  collection:
-                    type: object
-                    properties:
-                      chainId:
-                        type: integer
-                        description: The chain ID of the collection.
-                      name:
-                        type: string
-                        description: Name of the collection.
-                      artistName:
-                        type: string
-                        description: Name of the artist.
-                      royaltyPercentage:
-                        type: number
-                        description: Royalty percentage.
-                      splitWithAddresses:
-                        type: array
-                        items:
-                          type: string
-                        description: Addresses for split-with (for avatar images).
-                      mintDate:
-                        type: string
-                        format: date-time
-                        description: Mint date of the asset.
-                      network:
-                        type: string
-                        description: Network (Ethereum).
-                      assetAddress:
-                        type: string
-                        description: Address of the asset.
-                      tokenStandard:
-                        type: string
-                        description: Token standard (ERC721).
-                  price:
-                    type: integer
-                    description: Price of the asset.
-                  status:
-                    type: integer
-                    description: Status of the asset.
-                  assetImage:
-                    type: string
-                    description: Link to the asset image.
-                  collectionThumbnailImage:
-                    type: string
-                    description: Link to the collection thumbnail image.
-                  blockExplorerLink:
-                    type: string
-                    description: Block explorer link for the asset.
+                $ref: "#/components/schemas/AssetDetails"
+
+components:
+  schemas:
+    Asset:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the token.
+        collection:
+          $ref: "#/components/schemas/Collection"
+        collectionAddress:
+          type: string
+          description: Address of the collection.
+        id:
+          type: string
+          description: ID of the asset.
+        image:
+          type: string
+          description: Link to the thumbnail image.
+        Listings:
+          type: array
+          items:
+            $ref: "#/components/schemas/Listing"
+
+    AssetDetails:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the token.
+        collection:
+          $ref: "#/components/schemas/Collection"
+        collectionAddress:
+          type: string
+          description: Address of the collection.
+        id:
+          type: string
+          description: ID of the asset.
+        image:
+          type: string
+          description: Link to the asset image.
+        Listings:
+          type: array
+          items:
+            $ref: "#/components/schemas/Listing"
+
+    Collection:
+      type: object
+      properties:
+        chainId:
+          type: integer
+          description: The chain ID of the collection.
+        name:
+          type: string
+          description: Name of the collection.
+        shortUrl:
+          type: string
+          description: Short URL of the collection.
+        standard:
+          type: string
+          description: Type of token standard.
+
+    Listing:
+      type: object
+      properties:
+        price:
+          type: integer
+          description: The price of the asset.
+        endTime:
+          type: integer
+          description: The end time of the listing.
+        status:
+          type: integer
+          description: The status of the listing.
+        saleData:
+          $ref: "#/components/schemas/SaleData"
+
+    SaleData:
+      type: object
+      properties:
+        expirationTimestamp:
+          type: integer
+          description: Expiration timestamp of the sale.
+        Lister:
+          type: string
+          description: Address of the lister.
+        ownerSignature:
+          type: string
+          description: Owner's signature.
+        Price:
+          type: integer
+          description: Price of the asset.
