@@ -29,7 +29,7 @@ paths:
                   assets:
                     type: array
                     items:
-                      $ref: "#/components/schemas/Asset"
+                      $ref: "#/components/schemas/AssetModel"
 
   /assets/{addressOrShortUrl}/{nftId}:
     get:
@@ -60,7 +60,7 @@ paths:
                   assets:
                     type: array
                     items:
-                      $ref: "#/components/schemas/AssetDetails"
+                      $ref: "#/components/schemas/AssetAddModel"
 
   /{userAddress}/{assetId}:
     get:
@@ -86,97 +86,618 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/AssetDetails"
+                $ref: "#/components/schemas/AssetModel"
 
 components:
   schemas:
-    Asset:
+    AssetAddModel:
       type: object
       properties:
-        name:
-          type: string
-          description: Name of the token.
-        collection:
-          $ref: "#/components/schemas/Collection"
-        collectionAddress:
-          type: string
-          description: Address of the collection.
         id:
           type: string
-          description: ID of the asset.
-        image:
-          type: string
-          description: Link to the thumbnail image.
-        Listings:
-          type: array
-          items:
-            $ref: "#/components/schemas/Listing"
-
-    AssetDetails:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of the token.
-        collection:
-          $ref: "#/components/schemas/Collection"
         collectionAddress:
           type: string
-          description: Address of the collection.
-        id:
+        nftId:
           type: string
-          description: ID of the asset.
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
         image:
           type: string
-          description: Link to the asset image.
-        Listings:
+        metadataUrl:
+          type: string
+        attributes:
+          type: object
+        mintData:
+          type: object
+        createdAt:
+          type: number
+          format: int64
+        isMinted:
+          type: boolean
+        royaltyPercentage:
+          type: number
+        tags:
           type: array
           items:
-            $ref: "#/components/schemas/Listing"
+            type: string
+        category:
+          type: string
+        listings:
+          type: object
+        updatedAt:
+          type: string
+          format: date-time
+        thumbnail:
+          type: string
 
-    Collection:
+    AssetModel:
       type: object
       properties:
+        id:
+          type: string
+        collectionAddress:
+          type: string
+        nftId:
+          type: string
+          format: int64
+        owners:
+          type: object
+        name:
+          type: string
+        description:
+          type: string
+        image:
+          type: string
+        metadataUrl:
+          type: string
+        attributes:
+          type: object
+        mintData:
+          type: object
+        createdAt:
+          type: number
+          format: int64
+        isMinted:
+          type: boolean
+        royaltyPercentage:
+          type: number
+        tags:
+          type: array
+          items:
+            type: string
+        category:
+          type: string
+        collection:
+          type: object
+        listings:
+          type: object
+        updatedAt:
+          type: string
+          format: date-time
+        thumbnail:
+          type: string
+
+    BannerAddModel:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        uploaderAddress:
+          type: string
+        date:
+          type: string
+          format: int64
+        artist:
+          type: string
+        layout:
+          type: string
+        colorType:
+          type: string
+        image:
+          type: string
+
+    BannerModel:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        uploaderAddress:
+          type: string
+        date:
+          type: string
+          format: int64
+        artist:
+          type: string
+        layout:
+          type: string
+        colorType:
+          type: string
+        image:
+          type: string
+
+    BlockAttributes:
+      type: object
+      properties:
+        id:
+          type: string
         chainId:
           type: integer
-          description: The chain ID of the collection.
-        name:
+          format: int32
+        number:
+          type: integer
+          format: int64
+        timestamp:
+          type: integer
+          format: int64
+
+    BlockModel:
+      type: object
+      properties:
+        id:
           type: string
-          description: Name of the collection.
+        chainId:
+          type: integer
+          format: int32
+        number:
+          type: integer
+          format: int64
+        timestamp:
+          type: integer
+          format: int64
+
+    CollectionAddModel:
+      type: object
+      properties:
+        address:
+          type: string
         shortUrl:
           type: string
-          description: Short URL of the collection.
+        symbol:
+          type: string
         standard:
           type: string
-          description: Type of token standard.
+        name:
+          type: string
+        description:
+          type: string
+        image:
+          type: string
+        creatorAddress:
+          type: string
+        imageBanner:
+          type: string
+        status:
+          type: string
+        frozenMetadataURL:
+          type: string
+        webhookId:
+          type: string
+        isExclusive:
+          type: boolean
+        chainId:
+          type: integer
+          format: int32
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
 
-    Listing:
+    CollectionModel:
       type: object
       properties:
-        price:
+        address:
+          type: string
+        shortUrl:
+          type: string
+        symbol:
+          type: string
+        standard:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        image:
+          type: string
+        creatorAddress:
+          type: string
+        creator:
+          type: object
+        imageBanner:
+          type: string
+        status:
+          type: string
+        frozenMetadataURL:
+          type: string
+        webhookId:
+          type: string
+        isExclusive:
+          type: boolean
+        chainId:
           type: integer
-          description: The price of the asset.
-        endTime:
+          format: int32
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    EmailAddModel:
+      type: object
+      properties:
+        id:
+          type: string
+        notificationId:
+          type: string
+        userAddress:
+          type: string
+        subject:
+          type: string
+
+    EmailModel:
+      type: object
+      properties:
+        id:
+          type: string
+        notificationId:
+          type: string
+        userAddress:
+          type: string
+        subject:
+          type: string
+
+    EventAddModel:
+      type: object
+      properties:
+        id:
+          type: string
+        smartContractAddress:
+          type: string
+        blockId:
+          type: string
+        logIndex:
           type: integer
-          description: The end time of the listing.
+          format: int32
+        txHash:
+          type: string
+        name:
+          type: string
+        information:
+          type: object
+        timestamp:
+          type: integer
+          format: int64
         status:
           type: integer
-          description: The status of the listing.
-        saleData:
-          $ref: "#/components/schemas/SaleData"
+          format: int32
 
-    SaleData:
+    EventModel:
       type: object
       properties:
-        expirationTimestamp:
-          type: integer
-          description: Expiration timestamp of the sale.
-        Lister:
+        id:
           type: string
-          description: Address of the lister.
-        ownerSignature:
+        smartContractAddress:
           type: string
-          description: Owner's signature.
-        Price:
+        blockId:
+          type: string
+        logIndex:
           type: integer
-          description: Price of the asset.
+          format: int32
+        txHash:
+          type: string
+        name:
+          type: string
+        information:
+          type: object
+        timestamp:
+          type: integer
+          format: int64
+        status:
+          type: integer
+          format: int32
+        block:
+          $ref: '#/components/schemas/BlockModel'
+
+    NotificationAddModel:
+      type: object
+      properties:
+        id:
+          type: string
+        userAddress:
+          type: string
+        type:
+          type: string
+        information:
+          type: object
+        isRead:
+          type: boolean
+
+    NotificationModel:
+      type: object
+      properties:
+        id:
+          type: string
+        userAddress:
+          type: string
+        type:
+          type: string
+        information:
+          type: object
+        isRead:
+          type: boolean
+
+    JobStatusReference:
+      type: object
+      properties:
+        processing:
+          type: integer
+        error:
+          type: integer
+
+    ParameterAddModel:
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          $ref: '#/components/schemas/JobStatusReference'
+
+    ParameterModel:
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          $ref: '#/components/schemas/JobStatusReference'
+
+    PostAddModel:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        writer:
+          type: string
+        artist:
+          type: string
+        imageUrl:
+          type: string
+        excerpt:
+          type: string
+        category:
+          type: integer
+          format: int32
+        sections:
+          type: object
+        tags:
+          type: string
+        authorAddress:
+          type: string
+        slug:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    PostModel:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        writer:
+          type: string
+        artist:
+          type: string
+        imageUrl:
+          type: string
+        excerpt:
+          type: string
+        category:
+          type: integer
+          format: int32
+        sections:
+          type: object
+        tags:
+          type: string
+        authorAddress:
+          type: string
+        slug:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    SmartContractAttributes:
+      type: object
+      properties:
+        address:
+          type: string
+        type:
+          type: string
+        initialBlockHeight:
+          type: integer
+          format: int32
+        syncedBlockHeight:
+          type: integer
+          format: int32
+        status:
+          type: integer
+          format: int32
+        blockId:
+          type: string
+
+    SmartContractModel:
+      type: object
+      properties:
+        address:
+          type: string
+        type:
+          type: string
+        initialBlockHeight:
+          type: integer
+          format: int32
+        syncedBlockHeight:
+          type: integer
+          format: int32
+        status:
+          type: integer
+          format: int32
+        blockId:
+          type: string
+        block:
+          $ref: '#/components/schemas/BlockModel'
+
+    TransactionAddModel:
+      type: object
+      properties:
+        id:
+          type: string
+        transactionType:
+          type: string
+        fromAddress:
+          type: string
+        toAddress:
+          type: string
+        assetId:
+          type: string
+        asset:
+          type: object
+        eventId:
+          type: string
+        event:
+          type: object
+        amount:
+          type: number
+        status:
+          type: integer
+          format: int32
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        reference:
+          type: object
+
+    TransactionModel:
+      type: object
+      properties:
+        id:
+          type: string
+        transactionType:
+          type: string
+        fromAddress:
+          type: string
+        toAddress:
+          type: string
+        assetId:
+          type: string
+        asset:
+          type: object
+        eventId:
+          type: string
+        event:
+          type: object
+        amount:
+          type: number
+        status:
+          type: integer
+          format: int32
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        reference:
+          type: object
+
+    UserAddModel:
+      type: object
+      properties:
+        address:
+          type: string
+        name:
+          type: string
+        alias:
+          type: string
+        description:
+          type: string
+        imageUrl:
+          type: string
+        instagram:
+          type: string
+        twitter:
+          type: string
+        discord:
+          type: string
+        websiteUrl:
+          type: boolean
+        email:
+          type: string
+        termsAccepted:
+          type: boolean
+        termsVersion:
+          type: integer
+        termsAcceptedDate:
+          type: string
+          format: date-time
+        isBanned:
+          type: boolean
+        role:
+          type: string
+
+    UserModel:
+      type: object
+      properties:
+        address:
+          type: string
+        name:
+          type: string
+        alias:
+          type: string
+        description:
+          type: string
+        imageUrl:
+          type: string
+        instagram:
+          type: string
+        twitter:
+          type: string
+        discord:
+          type: string
+        websiteUrl:
+          type: boolean
+        email:
+          type: string
+        termsAccepted:
+          type: boolean
+        termsVersion:
+          type: integer
+        termsAcceptedDate:
+          type: string
+          format: date-time
+        isBanned:
+          type: boolean
+        role:
+          type: string
